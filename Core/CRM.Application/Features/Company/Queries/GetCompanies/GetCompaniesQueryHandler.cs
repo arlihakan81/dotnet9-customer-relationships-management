@@ -17,7 +17,11 @@ namespace CRM.Application.Features.Company.Queries.GetCompanies
             var query = await _repository.GetAllAsync(request.Page, request.PageSize);
             if(request.Filter != null)
             {
-                query?.Where(_ => _.Name.Contains(request.Filter));
+                query = query?.Where(_ => _.Name.Contains(request.Filter));
+            }
+            else if(request.OwnerId != null)
+            {
+                query = query?.Where(_ => _.OwnerId == request.OwnerId && _.Status == request.Status);
             }
             if (query != null)
             {

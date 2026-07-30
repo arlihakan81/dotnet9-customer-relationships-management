@@ -10,6 +10,7 @@ namespace CRM.Application.Features.Company.Queries.GetCompanies
         public int PageSize { get; set; } = 100;
         public string? Filter { get; set; }
         public Guid? OwnerId { get; set; }
+        public bool Status { get; set; } = true;
 
     }
 }

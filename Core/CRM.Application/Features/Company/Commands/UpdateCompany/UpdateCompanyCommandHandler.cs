@@ -33,6 +33,9 @@ namespace CRM.Application.Features.Company.Commands.UpdateCompany
                 company.AlternatePhone = request.AlternatePhone;
                 company.Email = request.Email;
                 company.Fax = request.Fax;
+                company.LinkedinUrl = request.LinkedinUrl;
+                company.Status = request.Status;
+                company.OwnerId = request.OwnerId;
             }
             _repository.UpdateAsync(company!);
             await _unitOfWork.SaveChangesAsync();

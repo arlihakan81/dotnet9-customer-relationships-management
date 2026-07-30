@@ -33,7 +33,10 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
         public string? InstagramUrl { get; set; }
         public string? Description { get; set; }
 
+        [Required]
+        public Guid OwnerId { get; set; }
 
+        public bool Status { get; set; } = true;
 
 
 

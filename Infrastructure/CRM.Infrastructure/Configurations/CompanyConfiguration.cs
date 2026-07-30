@@ -11,6 +11,7 @@ namespace CRM.Infrastructure.Configurations
             builder.HasOne(c => c.CreatedBy).WithMany().HasForeignKey(c => c.CreatedById).OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(c => c.ModifiedBy).WithMany().HasForeignKey(c => c.ModifiedById).OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(c => c.DeletedBy).WithMany().HasForeignKey(c => c.DeletedById).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(c => c.Owner).WithMany(c => c.Companies).HasForeignKey(c => c.OwnerId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -24,5 +24,10 @@ namespace CRM.Domain.Entities
         public string? WhatsappUrl { get; set; }
         public string? InstagramUrl { get; set; }
         public string? Description { get; set; }
+        public Guid OwnerId { get; set; }
+        public bool Status { get; set; } = true;
+
+        // Navigation properties
+        public virtual User Owner { get; set; } = null!;
     }
 }

@@ -15,7 +15,7 @@
 
         public virtual Role Role { get; set; } = null!;
         public virtual Organization? Organization { get; set; }
-
+        public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
 
     }
 }

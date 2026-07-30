@@ -34,6 +34,8 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
                 X_Url = request.X_Url,
                 LinkedinUrl = request.LinkedinUrl,
                 WhatsappUrl = request.WhatsappUrl,
+                OwnerId = request.OwnerId,
+                Status = request.Status
             };
             await _repository.AddAsync(company);
             await _unitOfWork.SaveChangesAsync();
