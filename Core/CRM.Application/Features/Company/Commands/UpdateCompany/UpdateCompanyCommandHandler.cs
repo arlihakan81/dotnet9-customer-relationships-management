@@ -16,10 +16,10 @@ namespace CRM.Application.Features.Company.Commands.UpdateCompany
             {
                 company.Name = request.Name;
                 company.Description = request.Description;
-                company.Phone = request.Phone;
-                company.City = request.City;
-                company.Country = request.Country;
-                company.Source = request.Source;
+                company.Phone = new Domain.ValueObjects.PhoneNumber(request.Phone);
+                company.CityId = request.CityId;
+                company.CountryId = request.CountryId;
+                company.SourceId = request.SourceId;
                 company.State = request.State;
                 company.StreetAddress = request.StreetAddress;
                 company.Title = request.Title;
@@ -28,11 +28,11 @@ namespace CRM.Application.Features.Company.Commands.UpdateCompany
                 company.InstagramUrl = request.InstagramUrl;
                 company.X_Url = request.X_Url;
                 company.AvatarUrl = request.AvatarUrl;
-                company.Currency = request.Currency;
+                company.CurrencyId = request.CurrencyId;
                 company.FacebookUrl = request.FacebookUrl;
-                company.AlternatePhone = request.AlternatePhone;
-                company.Email = request.Email;
-                company.Fax = request.Fax;
+                company.AlternatePhone = request.AlternatePhone != null ? new Domain.ValueObjects.PhoneNumber(request.AlternatePhone) : null;
+                company.Email = new Domain.ValueObjects.EmailAddress(request.Email);
+                company.Fax = request.Fax != null ? new Domain.ValueObjects.PhoneNumber(request.Fax) : null;
                 company.LinkedinUrl = request.LinkedinUrl;
                 company.Status = request.Status;
                 company.OwnerId = request.OwnerId;

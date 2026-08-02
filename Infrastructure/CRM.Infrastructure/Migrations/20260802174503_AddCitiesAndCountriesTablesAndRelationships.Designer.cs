@@ -4,6 +4,7 @@ using CRM.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260802174503_AddCitiesAndCountriesTablesAndRelationships")]
+    partial class AddCitiesAndCountriesTablesAndRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -860,10 +863,10 @@ namespace CRM.Infrastructure.Migrations
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CityId")
+                    b.Property<Guid?>("CityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CountryId")
+                    b.Property<Guid?>("CountryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1262,15 +1265,11 @@ namespace CRM.Infrastructure.Migrations
                 {
                     b.HasOne("CRM.Domain.Entities.City", "City")
                         .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CityId");
 
                     b.HasOne("CRM.Domain.Entities.Country", "Country")
                         .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CountryId");
 
                     b.HasOne("CRM.Domain.Entities.User", "CreatedBy")
                         .WithMany()

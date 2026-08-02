@@ -1,60 +1,98 @@
 ﻿using CRM.Application.Responses;
 using System.Net;
 using System.Text.Json;
+using FluentValidation;
 
 namespace CRM.API.Middlewares
 {
-    public class ExceptionHandler(RequestDelegate next)
+    public sealed class ExceptionHandler(RequestDelegate next, ILogger<ExceptionHandler> logger)
     {
-        private readonly RequestDelegate _next = next;
-
         public async Task InvokeAsync(HttpContext context)
         {
             try
             {
-                // İsteği bir sonraki adıma (Controller'a) gönder
-                await _next(context);
+                await next(context);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                // Eğer bir hata fırlatılırsa burası yakalar
-                await HandleExceptionAsync(context, ex);
+                logger.LogError(exception, exception.Message);
+
+                await HandleExceptionAsync(context, exception);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
 
-            // Varsayılan olarak 500 Internal Server Error (Sistem Hatası)
-            var statusCode = HttpStatusCode.InternalServerError;
-            string errorMessage = "An unexpected error occurred on the server.";
+            HttpStatusCode statusCode;
+            object response;
 
-            // Hatayı tipine göre ayırıyoruz (Pattern Matching)
-            if (exception is Exception businessException)
+            switch (exception)
             {
-                // Bizim fırlattığımız bilerek yapılan kısıtlamalar (Örn: "Müşteri bulunamadı")
-                statusCode = HttpStatusCode.BadRequest; // 400
-                errorMessage = businessException.InnerException!.ToString();
-            }
-            else if (exception is UnauthorizedAccessException)
-            {
-                statusCode = HttpStatusCode.Unauthorized; // 401
-                errorMessage = "You are not authorized to access this resource.";
+                case ValidationException validationException:
+                    statusCode = HttpStatusCode.BadRequest;
+
+                    response = new
+                    {
+                        Success = false,
+                        Message = "Validation failed.",
+                        Errors = validationException.Errors.Select(x => new
+                        {
+                            x.PropertyName,
+                            x.ErrorMessage
+                        })
+                    };
+                    break;
+
+                case UnauthorizedAccessException:
+                    statusCode = HttpStatusCode.Unauthorized;
+
+                    response = new
+                    {
+                        Success = false,
+                        Message = "Unauthorized."
+                    };
+                    break;
+
+                case KeyNotFoundException:
+                    statusCode = HttpStatusCode.NotFound;
+
+                    response = new
+                    {
+                        Success = false,
+                        Message = exception.Message
+                    };
+                    break;
+
+                case ArgumentException:
+                    statusCode = HttpStatusCode.BadRequest;
+
+                    response = new
+                    {
+                        Success = false,
+                        Message = exception.Message
+                    };
+                    break;
+
+                default:
+                    statusCode = HttpStatusCode.InternalServerError;
+
+                    response = new
+                    {
+                        Success = false,
+                        Message = exception.Message
+                        // Production'da istersen bunun yerine
+                        // "An unexpected error occurred."
+                        // döndürebilirsin.
+                    };
+                    break;
             }
 
             context.Response.StatusCode = (int)statusCode;
 
-            // Senin o meşhur kurumsal BaseResponse formatın!
-            // T tipini object veya string olarak verebilirsin, Failure zaten Data dönmez.
-            var response = BaseResponse<object>.FailureResult(errorMessage);
-
-            // JSON'a serialize ederken camelCase kalıbına uysun diye ayar yapıyoruz
-            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-            var jsonResponse = JsonSerializer.Serialize(response, options);
-
-            return context.Response.WriteAsync(jsonResponse);
+            await context.Response.WriteAsync(
+                JsonSerializer.Serialize(response));
         }
-
     }
 }

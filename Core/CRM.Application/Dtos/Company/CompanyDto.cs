@@ -11,12 +11,12 @@
         public string? AlternatePhone { get; set; }
         public string? Fax { get; set; }
         public string? Website { get; set; }
-        public string Source { get; set; } = string.Empty; // Add a property for the source of the company (e.g., referral, website, etc.)
-        public string Currency { get; set; } = string.Empty; // Add a property for the currency used by the company (e.g., USD, EUR, etc.)
+        public Guid SourceId { get; set; } // Add a property for the source of the company (e.g., referral, website, etc.)
+        public Guid CurrencyId { get; set; } // Add a property for the currency used by the company (e.g., USD, EUR, etc.)
         public string? StreetAddress { get; set; }
-        public string? City { get; set; }
+        public string City { get; set; } = string.Empty;
         public string? State { get; set; }
-        public string? Country { get; set; }
+        public string Country { get; set; } = string.Empty;
         public string? FacebookUrl { get; set; }
         public string? LinkedinUrl { get; set; }
         public string? X_Url { get; set; }

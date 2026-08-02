@@ -19,17 +19,17 @@ namespace CRM.Infrastructure.Repositories
             entity!.IsDeleted = true;
         }
 
-        public async Task<IEnumerable<T>?> GetAllAsync(int page, int pageSize, Expression<Func<T, bool>>? expression = null)
+        public virtual async Task<IEnumerable<T>?> GetAllAsync(int page, int pageSize, Expression<Func<T, bool>>? expression = null)
         {
             return expression is null ? await context.Set<T>().Skip((page - 1) * pageSize).Take(pageSize).ToListAsync() : await context.Set<T>().Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
-        public async Task<T?> GetAsync(Expression<Func<T, bool>> expression)
-        {
+        public virtual async Task<T?> GetAsync(Expression<Func<T, bool>> expression)
+        { 
             return await context.Set<T>().FirstOrDefaultAsync(expression);
         }
 
-        public async Task<T?> GetByIdAsync(Guid id)
+        public virtual async Task<T?> GetByIdAsync(Guid id)
         {
             return await context.Set<T>().FindAsync(id);
         }

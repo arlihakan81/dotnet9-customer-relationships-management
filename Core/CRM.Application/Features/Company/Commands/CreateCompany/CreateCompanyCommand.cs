@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using CRM.Domain.ValueObjects;
+using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace CRM.Application.Features.Company.Commands.CreateCompany
@@ -19,13 +20,13 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
         public string? Website { get; set; }
 
         [Required]
-        public string Source { get; set; } = string.Empty;
+        public Guid SourceId { get; set; }
         [Required]
-        public string Currency { get; set; } = string.Empty;
+        public Guid CurrencyId { get; set; }
         public string? StreetAddress { get; set; }
-        public string? City { get; set; }
+        public Guid CityId { get; set; }
         public string? State { get; set; }
-        public string? Country { get; set; }
+        public Guid CountryId { get; set; }
         public string? FacebookUrl { get; set; }
         public string? LinkedinUrl { get; set; }
         public string? X_Url { get; set; }
