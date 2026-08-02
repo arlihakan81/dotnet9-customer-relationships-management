@@ -34,6 +34,8 @@ namespace CRM.Domain.Entities
         public virtual Currency Currency { get; set; } = null!;
         public virtual City City { get; set; } = null!;
         public virtual Country Country { get; set; } = null!;
-   
+
+        public virtual ICollection<Contact> Contacts { get; set; } = new List<Contact>();
+
     }
 }

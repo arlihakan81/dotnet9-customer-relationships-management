@@ -13,6 +13,7 @@ namespace CRM.Infrastructure.Contexts
         public DbSet<Role> Roles { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         public DbSet<Source> Sources { get; set; }
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<Country> Countries { get; set; }
@@ -28,6 +29,7 @@ namespace CRM.Infrastructure.Contexts
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
             modelBuilder.Entity<Company>().HasQueryFilter(c => c.OrganizationId == _organizationService.GetCurrentOrganizationId() && !c.IsDeleted);
+            modelBuilder.Entity<Contact>().HasQueryFilter(c => c.OrganizationId == _organizationService.GetCurrentOrganizationId() && !c.IsDeleted);
             modelBuilder.Entity<Source>().HasQueryFilter(s => s.OrganizationId == _organizationService.GetCurrentOrganizationId() && !s.IsDeleted);
         }
 
