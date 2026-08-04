@@ -1,4 +1,7 @@
 ﻿using CRM.Application.Features.Contact.Commands.Create;
+using CRM.Application.Features.Contact.Commands.Delete;
+using CRM.Application.Features.Contact.Commands.Update;
+using CRM.Application.Features.Contact.Queries.GetContact;
 using CRM.Application.Features.Contact.Queries.GetContacts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -20,12 +23,38 @@ namespace CRM.API.Controllers
             return Ok(await _sender.Send(query));
         }
 
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var query = new GetContactByIdQuery { Id = id };
+            return Ok(await _sender.Send(query));
+        }
+
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateContactCommand command)
+        public async Task<IActionResult> Post([FromBody] CreateContactCommand command)
         {
             await _sender.Send(command);
             return Created();
         }
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Put(Guid id, [FromBody] UpdateContactCommand command)
+        {
+            id = command.Id;
+            await _sender.Send(command);
+            return NoContent();
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var command = new DeleteContactCommand { Id = id };
+            await _sender.Send(command);
+            return NoContent();
+        }
+
+
+
 
 
 

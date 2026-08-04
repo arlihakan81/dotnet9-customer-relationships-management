@@ -16,7 +16,7 @@ namespace CRM.Infrastructure.Configurations
                 email.Property(e => e.Value)
                     .HasColumnName("Email")
                     .IsRequired()
-                    .HasMaxLength(20);
+                    .HasMaxLength(100);
             });
 
             builder.OwnsOne(c => c.Mobile, mobile =>

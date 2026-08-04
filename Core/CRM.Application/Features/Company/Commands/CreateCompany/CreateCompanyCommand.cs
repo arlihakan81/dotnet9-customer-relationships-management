@@ -24,8 +24,10 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
         [Required]
         public Guid CurrencyId { get; set; }
         public string? StreetAddress { get; set; }
+        [Required]
         public Guid CityId { get; set; }
         public string? State { get; set; }
+        [Required]
         public Guid CountryId { get; set; }
         public string? FacebookUrl { get; set; }
         public string? LinkedinUrl { get; set; }
@@ -37,6 +39,7 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
         [Required]
         public Guid OwnerId { get; set; }
 
+        [Required]
         public bool Status { get; set; } = true;
 
 
