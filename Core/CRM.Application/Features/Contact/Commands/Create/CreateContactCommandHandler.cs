@@ -27,7 +27,7 @@ namespace CRM.Application.Features.Contact.Commands.Create
                 CompanyId = request.CompanyId
             };
             await _repository.AddAsync(contact);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

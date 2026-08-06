@@ -11,37 +11,9 @@ namespace CRM.Infrastructure.Repositories
     {
         private readonly AppDbContext _context = context;
 
-        public async Task ConvertLeadToCompanyAsync(Guid leadId)
+        public async Task ConvertLeadAsync(Guid leadId)
         {
-            var lead = await GetByIdAsync(leadId);
-            if(lead is not null)
-            {
-                var company = new Company
-                {
-                    Name = lead.Name,
-                    Title = lead.Name,
-                    CityId = lead.CityId,
-                    CountryId = lead.CountryId,
-                    Phone = lead.Phone,
-                    Email = lead.Email,
-                    CurrencyId = _context.Currencies.FirstOrDefault(_ => _.Symbol == "₺")!.Id,
-                    SourceId = lead.SourceId,
-                    OwnerId = lead.OwnerId,
-                    Status = true,
-                    Contacts = [
-                        new Contact {
-                            FirstName = lead.Name,
-                            LastName = lead.Name,
-                            Title = lead.Position!,
-                            CityId = lead.CityId,
-                            CountryId = lead.CountryId,
-                            Email = lead.Email,
-                            Mobile = lead.Phone,
-                        }    
-                    ]
-                };
-                _context.Companies.Add(company);
-            }            
+            await _context.SaveChangesAsync();
         }
 
         public override async Task<IEnumerable<Lead>?> GetAllAsync(int page, int pageSize, Expression<Func<Lead, bool>>? expression = null)

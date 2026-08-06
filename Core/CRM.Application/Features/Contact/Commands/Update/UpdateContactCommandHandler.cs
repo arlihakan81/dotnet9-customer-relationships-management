@@ -29,7 +29,7 @@ namespace CRM.Application.Features.Contact.Commands.Update
             contact.State = request.State;
             contact.CompanyId = request.CompanyId;
             _repository.UpdateAsync(contact);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

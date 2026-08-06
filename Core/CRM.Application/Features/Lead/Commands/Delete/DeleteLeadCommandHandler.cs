@@ -16,7 +16,7 @@ namespace CRM.Application.Features.Lead.Commands.Delete
             if (lead is null)
                 return BaseResponse<Guid>.FailureResult("No lead found", "No lead found");
             await _repository.DeleteAsync(request.Id);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return BaseResponse<Guid>.SuccessResult(lead.Id, "Lead deleted successfully");
         }
     }

@@ -15,7 +15,7 @@ namespace CRM.Application.Features.Company.Commands.DeleteCompany
             if (company != null)
             {
                 await _repository.DeleteAsync(company.Id);
-                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
             }
         }
     }

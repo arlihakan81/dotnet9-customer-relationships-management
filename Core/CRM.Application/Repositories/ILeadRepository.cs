@@ -4,6 +4,6 @@ namespace CRM.Application.Repositories
 {
     public interface ILeadRepository : IRepository<Lead>
     {
-        Task ConvertLeadToCompanyAsync(Guid leadId);
+        Task ConvertLeadAsync(Guid leadId);
     }
 }

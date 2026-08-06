@@ -38,7 +38,7 @@ namespace CRM.Application.Features.Company.Commands.UpdateCompany
                 company.OwnerId = request.OwnerId;
             }
             _repository.UpdateAsync(company!);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -16,21 +16,21 @@ namespace CRM.Application.Features.Lead.Commands.Update
             var lead = await _repository.GetByIdAsync(request.Id);
 
             if (lead is null)
-                BaseResponse<LeadDto>.FailureResult(lead!.Name, "Requested data is not found");
-
+                BaseResponse<LeadDto>.FailureResult(lead!.FirstName+" "+lead.LastName, "Requested data is not found");
             else
             {
-                lead.Name = request.Name;
+                lead.FirstName = request.FirstName;
+                lead.LastName = request.LastName;
                 lead.Email = new Domain.ValueObjects.EmailAddress(request.Email);
                 lead.Phone = new Domain.ValueObjects.PhoneNumber(request.Phone);
                 lead.SourceId = request.SourceId;
+                lead.CurrencyId = request.CurrencyId;
                 lead.CityId = request.CityId;
                 lead.CountryId = request.CountryId;
-                lead.Position = request.Position;
+                lead.JobTitle = request.JobTitle;
                 lead.OwnerId = request.OwnerId;
-
                 _repository.UpdateAsync(lead);
-                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
             }
         }
     }

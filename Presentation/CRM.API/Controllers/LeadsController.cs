@@ -40,11 +40,10 @@ namespace CRM.API.Controllers
         }
 
         [HttpPost("{id:guid}/convert")]
-        public async Task<IActionResult> Convert(Guid id)
+        public async Task<IActionResult> Convert(Guid id, [FromBody] ConvertLeadCommand command)
         {
-            var command = new ConvertLeadToCompanyCommand { Id = id };
-            await _sender.Send(command);
-            return Ok();
+            command.Id = id;
+            return Ok(await _sender.Send(command));
         }
 
 

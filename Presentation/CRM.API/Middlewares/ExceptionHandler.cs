@@ -81,7 +81,7 @@ namespace CRM.API.Middlewares
                     response = new
                     {
                         Success = false,
-                        Message = exception.Message
+                        Message = exception.InnerException?.Message ?? exception.Message
                         // Production'da istersen bunun yerine
                         // "An unexpected error occurred."
                         // döndürebilirsin.

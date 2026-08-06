@@ -4,6 +4,7 @@ using CRM.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRM.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260806183033_AlterTableLeadsAlterColumnsAndAddColumns")]
+    partial class AlterTableLeadsAlterColumnsAndAddColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1200,9 +1203,6 @@ namespace CRM.Infrastructure.Migrations
                     b.Property<Guid>("CreatedById")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CurrencyId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
@@ -1241,9 +1241,6 @@ namespace CRM.Infrastructure.Migrations
                     b.Property<Guid>("SourceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
@@ -1255,8 +1252,6 @@ namespace CRM.Infrastructure.Migrations
                     b.HasIndex("CountryId");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("CurrencyId");
 
                     b.HasIndex("DeletedById");
 
@@ -1739,12 +1734,6 @@ namespace CRM.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CRM.Domain.Entities.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CRM.Domain.Entities.User", "DeletedBy")
                         .WithMany()
                         .HasForeignKey("DeletedById");
@@ -1818,8 +1807,6 @@ namespace CRM.Infrastructure.Migrations
                     b.Navigation("Country");
 
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("Currency");
 
                     b.Navigation("DeletedBy");
 

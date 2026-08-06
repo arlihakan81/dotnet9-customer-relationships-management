@@ -11,7 +11,11 @@ namespace CRM.Infrastructure.Configurations
             builder.ToTable("Leads");
             builder.HasKey(l => l.Id);
 
-            builder.Property(l => l.Name)
+            builder.Property(l => l.FirstName)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(l => l.LastName)
                 .IsRequired()
                 .HasMaxLength(100);
 
@@ -35,6 +39,14 @@ namespace CRM.Infrastructure.Configurations
                 .WithMany()
                 .HasForeignKey(l => l.OwnerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(l => l.Company)
+                .WithMany()
+                .HasForeignKey(l => l.CompanyId);
+
+            builder.HasOne(l => l.Contact)
+                .WithMany()
+                .HasForeignKey(l => l.ContactId);
 
         }
     }

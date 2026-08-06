@@ -13,18 +13,20 @@ namespace CRM.Application.Features.Lead.Commands.Create
         {
             var lead = new Domain.Entities.Lead
             {
-                Name = request.Name,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
                 Email = new Domain.ValueObjects.EmailAddress(request.Email),
                 Phone = new Domain.ValueObjects.PhoneNumber(request.Phone),
-                Company = request.Company,
-                Position = request.Position,
+                CompanyName = request.Company,
+                JobTitle = request.JobTitle,
                 SourceId = request.SourceId,
+                CurrencyId = request.CurrencyId,
                 OwnerId = request.OwnerId,
                 CityId = request.CityId,
                 CountryId = request.CountryId
             };
             await _repository.AddAsync(lead);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

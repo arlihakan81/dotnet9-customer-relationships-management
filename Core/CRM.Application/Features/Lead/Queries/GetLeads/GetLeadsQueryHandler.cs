@@ -17,7 +17,7 @@ namespace CRM.Application.Features.Lead.Queries.GetLeads
             {
                 var query = await _repository.GetAllAsync(request.Page, request.PageSize);
                 if (request.Filter is not null)
-                    query = query!.Where(_ => _.Name.Contains(request.Filter));
+                    query = query!.Where(_ => _.FirstName.Contains(request.Filter) || _.LastName.Contains(request.Filter));
                 if(request.OwnerId is not null)
                     query = query!.Where(_ => _.OwnerId == request.OwnerId);
                 var leadDtos = _mapper.Map<IEnumerable<LeadDto>>(query);

@@ -38,7 +38,7 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
                 Status = request.Status
             };
             await _repository.AddAsync(company);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }
