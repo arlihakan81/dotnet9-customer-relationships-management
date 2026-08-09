@@ -29,6 +29,7 @@ namespace CRM.Application.Features.Lead.Commands.Update
                 lead.CountryId = request.CountryId;
                 lead.JobTitle = request.JobTitle;
                 lead.OwnerId = request.OwnerId;
+                lead.IndustryId = request.IndustryId;
                 _repository.UpdateAsync(lead);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
             }

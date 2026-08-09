@@ -22,6 +22,8 @@ namespace CRM.Application.Features.Lead.Commands.Create
         public Guid CurrencyId { get; set; }
         [Required]
         public Guid OwnerId { get; set; }
+        [Required]
+        public Guid IndustryId { get; set; }
 
         [Required]
         public Guid CityId { get; set; }

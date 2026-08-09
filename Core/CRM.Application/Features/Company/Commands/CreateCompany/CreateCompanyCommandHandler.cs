@@ -24,6 +24,7 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
                 CountryId = request.CountryId,
                 CurrencyId = request.CurrencyId,
                 SourceId = request.SourceId,
+                IndustryId = request.IndustryId,
                 Description = request.Description,
                 Fax = request.Fax is not null ? new Domain.ValueObjects.PhoneNumber(request.Fax) : null,
                 Website = request.Website,

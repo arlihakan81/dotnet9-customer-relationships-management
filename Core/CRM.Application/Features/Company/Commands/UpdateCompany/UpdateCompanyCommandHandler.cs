@@ -20,6 +20,7 @@ namespace CRM.Application.Features.Company.Commands.UpdateCompany
                 company.CityId = request.CityId;
                 company.CountryId = request.CountryId;
                 company.SourceId = request.SourceId;
+                company.IndustryId = request.IndustryId;
                 company.State = request.State;
                 company.StreetAddress = request.StreetAddress;
                 company.Title = request.Title;

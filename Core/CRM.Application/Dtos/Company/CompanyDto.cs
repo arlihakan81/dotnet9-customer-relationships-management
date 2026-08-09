@@ -17,6 +17,7 @@
         public string City { get; set; } = string.Empty;
         public string? State { get; set; }
         public string Country { get; set; } = string.Empty;
+        public string Industry { get; set; } = string.Empty;
         public string? FacebookUrl { get; set; }
         public string? LinkedinUrl { get; set; }
         public string? X_Url { get; set; }

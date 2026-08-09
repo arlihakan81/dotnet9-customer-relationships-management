@@ -23,7 +23,8 @@ namespace CRM.Application.Features.Lead.Commands.Create
                 CurrencyId = request.CurrencyId,
                 OwnerId = request.OwnerId,
                 CityId = request.CityId,
-                CountryId = request.CountryId
+                CountryId = request.CountryId,
+                IndustryId = request.IndustryId
             };
             await _repository.AddAsync(lead);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

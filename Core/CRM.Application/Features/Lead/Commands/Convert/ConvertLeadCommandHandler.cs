@@ -48,6 +48,7 @@ namespace CRM.Application.Features.Lead.Commands.Convert
                         Phone = new Domain.ValueObjects.PhoneNumber(lead.Phone.Value),
                         Title = lead.CompanyName,
                         CurrencyId = lead.CurrencyId,
+                        IndustryId = lead.IndustryId,
                         OwnerId = lead.OwnerId
                     };
                     await _companyRepository.AddAsync(company);

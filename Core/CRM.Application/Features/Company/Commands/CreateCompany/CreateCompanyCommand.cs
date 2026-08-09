@@ -29,6 +29,8 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
         public string? State { get; set; }
         [Required]
         public Guid CountryId { get; set; }
+        [Required]
+        public Guid IndustryId { get; set; }
         public string? FacebookUrl { get; set; }
         public string? LinkedinUrl { get; set; }
         public string? X_Url { get; set; }

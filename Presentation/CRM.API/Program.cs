@@ -64,6 +64,10 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddScoped<ILeadRepository, LeadRepository>();
+builder.Services.AddScoped<IContactStageRepository, ContactStageRepository>();
+builder.Services.AddScoped<IPipelineRepository, PipelineRepository>();
+builder.Services.AddScoped<IStageRepository, StageRepository>();
+builder.Services.AddScoped<IDealRepository, DealRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddMediatR(config =>

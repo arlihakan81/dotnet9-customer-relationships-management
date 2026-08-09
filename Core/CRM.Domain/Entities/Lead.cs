@@ -17,6 +17,8 @@ namespace CRM.Domain.Entities
         public Guid CityId { get; set; }
         public Guid CountryId { get; set; }
         public Guid CurrencyId { get; set; }
+        public Guid IndustryId { get; set; }
+        public Guid StageId { get; set; }
 
         public Guid? CompanyId { get; set; }
         public Guid? ContactId { get; set; }
@@ -30,5 +32,8 @@ namespace CRM.Domain.Entities
         public virtual Company? Company { get; set; }
         public virtual Contact? Contact { get; set; }
         public virtual Currency Currency { get; set; } = default!;
+        public virtual Industry Industry { get; set; } = default!;
+        public virtual ContactStage ContactStage { get; set; } = default!;
+
     }
 }

@@ -19,6 +19,11 @@ namespace CRM.Infrastructure.Contexts
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Lead> Leads { get; set; }
+        public DbSet<Industry> Industries { get; set; }
+        public DbSet<ContactStage> ContactStages { get; set; }
+        public DbSet<Pipeline> Pipelines { get; set; }
+        public DbSet<Stage> Stages { get; set; }
+        public DbSet<Deal> Deals { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +38,7 @@ namespace CRM.Infrastructure.Contexts
             modelBuilder.Entity<Contact>().HasQueryFilter(c => c.OrganizationId == _organizationService.GetCurrentOrganizationId() && !c.IsDeleted);
             modelBuilder.Entity<Source>().HasQueryFilter(s => s.OrganizationId == _organizationService.GetCurrentOrganizationId() && !s.IsDeleted);
             modelBuilder.Entity<Lead>().HasQueryFilter(c => c.OrganizationId == _organizationService.GetCurrentOrganizationId() && !c.IsDeleted);
+            modelBuilder.Entity<ContactStage>().HasQueryFilter(cs => cs.OrganizationId == _organizationService.GetCurrentOrganizationId() && !cs.IsDeleted);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

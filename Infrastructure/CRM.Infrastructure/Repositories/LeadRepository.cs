@@ -18,7 +18,7 @@ namespace CRM.Infrastructure.Repositories
 
         public override async Task<IEnumerable<Lead>?> GetAllAsync(int page, int pageSize, Expression<Func<Lead, bool>>? expression = null)
         {
-            return await _context.Leads.Include(l => l.City).Include(l => l.Country)
+            return await _context.Leads.Include(l => l.City).Include(l => l.Country).Include(l => l.Industry)
                 .Where(expression ?? (x => true))
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -27,7 +27,7 @@ namespace CRM.Infrastructure.Repositories
 
         public override async Task<Lead?> GetByIdAsync(Guid id)
         {
-            return await _context.Leads.Include(_ => _.City).Include(_ => _.Country)
+            return await _context.Leads.Include(_ => _.City).Include(_ => _.Country).Include(l => l.Industry)
                 .FirstOrDefaultAsync(_ => _.Id == id);
         }
     }

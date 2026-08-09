@@ -27,6 +27,7 @@ namespace CRM.Domain.Entities
         public string? Description { get; set; }
         public Guid OwnerId { get; set; }
         public bool Status { get; set; } = true;
+        public Guid IndustryId { get; set; }
 
         // Navigation properties
         public virtual User Owner { get; set; } = null!;
@@ -34,7 +35,8 @@ namespace CRM.Domain.Entities
         public virtual Currency Currency { get; set; } = null!;
         public virtual City City { get; set; } = null!;
         public virtual Country Country { get; set; } = null!;
-
+        public virtual Industry Industry { get; set; } = default!;
+   
         public virtual ICollection<Contact> Contacts { get; set; } = new List<Contact>();
 
     }

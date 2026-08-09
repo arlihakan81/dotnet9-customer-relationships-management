@@ -12,7 +12,7 @@ namespace CRM.Infrastructure.Repositories
 
         public override async Task<IEnumerable<Company>?> GetAllAsync(int page, int pageSize, Expression<Func<Company, bool>>? expression = null)
         {
-            return await _context.Companies.Include(c => c.City).Include(c => c.Country)
+            return await _context.Companies.Include(c => c.City).Include(c => c.Country).Include(c => c.Industry)
                 .Where(expression ?? (c => true))
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -21,13 +21,14 @@ namespace CRM.Infrastructure.Repositories
 
         public override async Task<Company?> GetAsync(Expression<Func<Company, bool>> expression)
         {
-            return await _context.Companies.Include(c => c.City).Include(c => c.Country)
+            return await _context.Companies.Include(c => c.City).Include(c => c.Country).Include(c => c.Industry)
                 .FirstOrDefaultAsync(expression);
         }
 
         public override async Task<Company?> GetByIdAsync(Guid id)
         {
             return await _context.Companies.Include(c => c.City).Include(c => c.Country)
+                .Include(c => c.Industry)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 

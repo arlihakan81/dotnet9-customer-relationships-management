@@ -11,6 +11,7 @@
         public string JobTitle { get; set; } = string.Empty;
         public Guid SourceId { get; set; }
         public Guid OwnerId { get; set; }
+        public string Industry { get; set; } = string.Empty;
 
         public Guid CityId { get; set; }
         public Guid CountryId { get; set; }
