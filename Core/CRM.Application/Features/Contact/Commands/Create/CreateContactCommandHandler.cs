@@ -1,16 +1,30 @@
-﻿using CRM.Application.Interfaces;
+﻿using AutoMapper;
+using CRM.Application.Dtos.Contact;
+using CRM.Application.Interfaces;
 using CRM.Application.Repositories;
+using CRM.Application.Responses;
+using CRM.Application.Validations.Contact;
+using FluentValidation;
 using MediatR;
 
 namespace CRM.Application.Features.Contact.Commands.Create
 {
-    public class CreateContactCommandHandler(IContactRepository repository, IUnitOfWork unitOfWork) : IRequestHandler<CreateContactCommand>
+    public sealed class CreateContactCommandHandler(IContactRepository repository, IUnitOfWork unitOfWork, IMapper mapper, IValidator<CreateContactCommand> validator) : IRequestHandler<CreateContactCommand, BaseResponse<ContactDto>>
     {
         private readonly IContactRepository _repository = repository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMapper _mapper = mapper;
+        private readonly IValidator<CreateContactCommand> _validator = validator;
 
-        public async Task Handle(CreateContactCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<ContactDto>> Handle(CreateContactCommand request, CancellationToken cancellationToken)
         {
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+            {
+                return BaseResponse<ContactDto>.FailureResult("Validation failed", string.Join(", ", validationResult.Errors.Select(x => x.ErrorMessage)));
+            }
+
             var contact = new Domain.Entities.Contact
             {
                 FirstName = request.FirstName,
@@ -28,6 +42,12 @@ namespace CRM.Application.Features.Contact.Commands.Create
             };
             await _repository.AddAsync(contact);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            contact = await _repository.GetByIdAsync(contact.Id);
+
+            var data = _mapper.Map<ContactDto>(contact);
+
+            return BaseResponse<ContactDto>.SuccessResult(data, "Contact has been added successfully");
         }
     }
 }

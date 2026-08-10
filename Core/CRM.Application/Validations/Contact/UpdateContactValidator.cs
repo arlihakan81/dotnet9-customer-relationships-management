@@ -1,12 +1,12 @@
-﻿using CRM.Application.Features.Contact.Commands.Create;
+﻿using CRM.Application.Features.Contact.Commands.Update;
 using FluentValidation;
 
 namespace CRM.Application.Validations.Contact
 {
-    public sealed class CreateContactValidator : AbstractValidator<CreateContactCommand>
+    public sealed class UpdateContactValidator : AbstractValidator<UpdateContactCommand>
     {
 
-        public CreateContactValidator()
+        public UpdateContactValidator()
         {
             RuleFor(x => x.FirstName)
                 .NotEmpty()

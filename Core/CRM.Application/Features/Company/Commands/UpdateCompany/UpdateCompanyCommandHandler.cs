@@ -1,16 +1,29 @@
-﻿using CRM.Application.Interfaces;
+﻿using AutoMapper;
+using CRM.Application.Dtos.Company;
+using CRM.Application.Interfaces;
 using CRM.Application.Repositories;
+using CRM.Application.Responses;
+using FluentValidation;
 using MediatR;
 
 namespace CRM.Application.Features.Company.Commands.UpdateCompany
 {
-    public class UpdateCompanyCommandHandler(ICompanyRepository repository, IUnitOfWork unitOfWork) : IRequestHandler<UpdateCompanyCommand>
+    public sealed class UpdateCompanyCommandHandler(ICompanyRepository repository, IUnitOfWork unitOfWork, IMapper mapper, IValidator<UpdateCompanyCommand> validator) : IRequestHandler<UpdateCompanyCommand, BaseResponse<CompanyDto>>
     {
         private readonly ICompanyRepository _repository = repository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMapper _mapper = mapper;
+        private readonly IValidator<UpdateCompanyCommand> _validator = validator;
 
-        public async Task Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<CompanyDto>> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
         {
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+            {
+                return BaseResponse<CompanyDto>.FailureResult("Validation failed", string.Join(", ", validationResult.Errors.Select(x => x.ErrorMessage)));
+            }
+
             var company = await _repository.GetByIdAsync(request.Id);
             if(company != null)
             {
@@ -40,6 +53,8 @@ namespace CRM.Application.Features.Company.Commands.UpdateCompany
             }
             _repository.UpdateAsync(company!);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return BaseResponse<CompanyDto>.SuccessResult(_mapper.Map<CompanyDto>(company), "Company has been updated successfully");
         }
     }
 }

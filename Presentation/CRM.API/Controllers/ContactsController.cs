@@ -19,10 +19,8 @@ namespace CRM.API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] GetContactsQuery query)
-        {
-            return Ok(await _sender.Send(query));
-        }
-
+            => Ok(await _sender.Send(query));
+        
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -32,17 +30,13 @@ namespace CRM.API.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateContactCommand command)
-        {
-            await _sender.Send(command);
-            return Created();
-        }
+            => Ok(await _sender.Send(command));
 
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] UpdateContactCommand command)
         {
             id = command.Id;
-            await _sender.Send(command);
-            return NoContent();
+            return Ok(await _sender.Send(command));
         }
 
         [HttpDelete("{id:guid}")]

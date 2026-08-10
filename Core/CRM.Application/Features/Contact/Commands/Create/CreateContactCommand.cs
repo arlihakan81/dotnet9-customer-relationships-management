@@ -1,9 +1,11 @@
-﻿using MediatR;
+﻿using CRM.Application.Dtos.Contact;
+using CRM.Application.Responses;
+using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace CRM.Application.Features.Contact.Commands.Create
 {
-    public class CreateContactCommand : IRequest
+    public class CreateContactCommand : IRequest<BaseResponse<ContactDto>>
     {
         [Required]
         public string FirstName { get; set; } = string.Empty;

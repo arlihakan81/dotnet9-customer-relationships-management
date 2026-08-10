@@ -5,6 +5,7 @@ using CRM.Application.Dtos.ContactStage;
 using CRM.Application.Dtos.Deal;
 using CRM.Application.Dtos.Lead;
 using CRM.Application.Dtos.Pipeline;
+using CRM.Application.Dtos.Source;
 using CRM.Application.Dtos.Stage;
 using CRM.Application.Features.Company.Commands.CreateCompany;
 using CRM.Domain.Entities;
@@ -43,6 +44,8 @@ namespace CRM.Application.Mapping
 
             CreateMap<Deal, DealDto>()
                 .ForMember(des => des.Value, opt => opt.MapFrom(src => src.Currency.Code + src.Value));
+
+            CreateMap<Source, SourceDto>();
         }
 
 

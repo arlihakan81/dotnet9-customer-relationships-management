@@ -1,12 +1,18 @@
 using CRM.API.Middlewares;
 using CRM.Application.Features.Company.Commands.CreateCompany;
+using CRM.Application.Features.Company.Commands.UpdateCompany;
 using CRM.Application.Features.Company.Queries.GetCompanies;
+using CRM.Application.Features.Contact.Commands.Create;
+using CRM.Application.Features.Contact.Commands.Update;
 using CRM.Application.Interfaces;
 using CRM.Application.Mapping;
 using CRM.Application.Repositories;
+using CRM.Application.Validations.Company;
+using CRM.Application.Validations.Contact;
 using CRM.Infrastructure.Contexts;
 using CRM.Infrastructure.Repositories;
 using CRM.Infrastructure.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
@@ -68,8 +74,16 @@ builder.Services.AddScoped<IContactStageRepository, ContactStageRepository>();
 builder.Services.AddScoped<IPipelineRepository, PipelineRepository>();
 builder.Services.AddScoped<IStageRepository, StageRepository>();
 builder.Services.AddScoped<IDealRepository, DealRepository>();
+builder.Services.AddScoped<ISourceRepository, SourceRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+// Company Validator
+builder.Services.AddScoped<IValidator<CreateCompanyCommand>, CreateCompanyValidator>();
+builder.Services.AddScoped<IValidator<UpdateCompanyCommand>, UpdateCompanyValidator>();
+// Contact Validator 
+builder.Services.AddScoped<IValidator<CreateContactCommand>, CreateContactValidator>();
+builder.Services.AddScoped<IValidator<UpdateContactCommand>, UpdateContactValidator>();
+
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(typeof(CreateCompanyCommandHandler).Assembly);

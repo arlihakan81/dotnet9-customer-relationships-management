@@ -1,4 +1,6 @@
 ﻿using CRM.Application.Features.Deal.Commands.Create;
+using CRM.Application.Features.Deal.Commands.Update;
+using CRM.Application.Features.Deal.Queries.GetDeal;
 using CRM.Application.Features.Deal.Queries.GetDeals;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,11 +20,23 @@ namespace CRM.API.Controllers
         public async Task<IActionResult> GetAll([FromQuery] GetDealsQuery query)
             => Ok(await _sender.Send(query));
 
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var query = new GetDealByIdQuery { Id = id };
+            return Ok(await _sender.Send(query));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateDealCommand command)
             => Ok(await _sender.Send(command));
 
-
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Put(Guid id, [FromBody] UpdateDealCommand command)
+        {
+            id = command.Id;
+            return Ok(await _sender.Send(command));
+        }
 
 
 

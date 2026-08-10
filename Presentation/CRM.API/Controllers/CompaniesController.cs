@@ -19,22 +19,12 @@ namespace CRM.API.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCompanyCommand command)
-        {
-            if (ModelState.IsValid)
-            {
-                await _sender.Send(command);
-                return Created();
-            }
-
-            return BadRequest();
-        }
+            => Ok(await _sender.Send(command));
 
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] GetCompaniesQuery query)
-        {
-            return Ok(await _sender.Send(query));
-        }
-
+            => Ok(await _sender.Send(query));
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -46,8 +36,7 @@ namespace CRM.API.Controllers
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCompanyCommand command)
         {
             id = command.Id;
-            await _sender.Send(command);
-            return Ok("Updated successfully");
+            return Ok(await _sender.Send(command));
         }
 
         [HttpDelete("{id}")]

@@ -1,17 +1,28 @@
 ﻿using AutoMapper;
+using CRM.Application.Dtos.Company;
 using CRM.Application.Interfaces;
 using CRM.Application.Repositories;
+using CRM.Application.Responses;
+using FluentValidation;
 using MediatR;
 
 namespace CRM.Application.Features.Company.Commands.CreateCompany
 {
-    public class CreateCompanyCommandHandler(ICompanyRepository repository, IUnitOfWork unitOfWork) : IRequestHandler<CreateCompanyCommand>
+    public sealed class CreateCompanyCommandHandler(ICompanyRepository repository, IUnitOfWork unitOfWork, IMapper mapper, IValidator<CreateCompanyCommand> validator) : IRequestHandler<CreateCompanyCommand, BaseResponse<CompanyDto>>
     {
         private readonly ICompanyRepository _repository = repository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMapper _mapper = mapper;
+        private IValidator<CreateCompanyCommand> _validator = validator;
 
-        public async Task Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<CompanyDto>> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
         {
+            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+            {
+                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", string.Join(", ", validationResult.Errors.Select(x => x.ErrorMessage)));
+            }
             var company = new Domain.Entities.Company
             {
                 AvatarUrl = request.AvatarUrl,
@@ -40,6 +51,10 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
             };
             await _repository.AddAsync(company);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            company = await _repository.GetByIdAsync(company.Id);
+
+            return BaseResponse<CompanyDto>.SuccessResult(_mapper.Map<CompanyDto>(company), "New company has been added successfully");
         }
     }
 }

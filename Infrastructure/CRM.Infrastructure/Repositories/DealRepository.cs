@@ -17,6 +17,10 @@ namespace CRM.Infrastructure.Repositories
                 .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
-
+        public override async Task<Deal?> GetByIdAsync(Guid id)
+        {
+            return await _context.Deals.Include(d => d.Stage)
+                .FirstOrDefaultAsync(d => d.Id == id);
+        }
     }
 }

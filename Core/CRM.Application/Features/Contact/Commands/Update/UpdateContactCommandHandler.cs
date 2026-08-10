@@ -1,16 +1,27 @@
-﻿using CRM.Application.Interfaces;
+﻿using AutoMapper;
+using CRM.Application.Dtos.Contact;
+using CRM.Application.Interfaces;
 using CRM.Application.Repositories;
+using CRM.Application.Responses;
+using FluentValidation;
 using MediatR;
 
 namespace CRM.Application.Features.Contact.Commands.Update
 {
-    public class UpdateContactCommandHandler(IContactRepository repository, IUnitOfWork unitOfWork) : IRequestHandler<UpdateContactCommand>
+    public sealed class UpdateContactCommandHandler(IContactRepository repository, IUnitOfWork unitOfWork, IMapper mapper, IValidator<UpdateContactCommand> validator) : IRequestHandler<UpdateContactCommand, BaseResponse<ContactDto>>
     {
         private readonly IContactRepository _repository = repository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMapper _mapper = mapper;
+        private readonly IValidator<UpdateContactCommand> _validator = validator;
 
-        public async Task Handle(UpdateContactCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<ContactDto>> Handle(UpdateContactCommand request, CancellationToken cancellationToken)
         {
+            var valid = await _validator.ValidateAsync(request, cancellationToken);
+
+            if (!valid.IsValid)
+                return BaseResponse<ContactDto>.FailureResult("Validation failed", string.Join(", ", valid.Errors.Select(x => x.ErrorMessage)));
+
             var contact = await _repository.GetByIdAsync(request.Id);
             if (contact is null)
             {
@@ -30,6 +41,10 @@ namespace CRM.Application.Features.Contact.Commands.Update
             contact.CompanyId = request.CompanyId;
             _repository.UpdateAsync(contact);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            var data = _mapper.Map<ContactDto>(contact);
+
+            return BaseResponse<ContactDto>.SuccessResult(data, "Contact has been updated successfully");
         }
     }
 }

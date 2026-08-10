@@ -1,10 +1,12 @@
-﻿using CRM.Domain.ValueObjects;
+﻿using CRM.Application.Dtos.Company;
+using CRM.Application.Responses;
+using CRM.Domain.ValueObjects;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace CRM.Application.Features.Company.Commands.CreateCompany
 {
-    public class CreateCompanyCommand : IRequest
+    public class CreateCompanyCommand : IRequest<BaseResponse<CompanyDto>>
     {
         public string? AvatarUrl { get; set; }
         [Required]
