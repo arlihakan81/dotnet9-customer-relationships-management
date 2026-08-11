@@ -15,7 +15,7 @@ namespace CRM.Application.Features.Source.Commands.Create
             var existingSource = await _repository.GetAsync(_ => _.Name == request.Name);
             if (existingSource != null)
             {
-                return BaseResponse<Guid>.FailureResult("Operation failed", $"{request.Name} already exists");
+                return BaseResponse<Guid>.FailureResult("Operation failed", 400, $"{request.Name} already exists");
             }
 
             var source = new Domain.Entities.Source
@@ -27,7 +27,7 @@ namespace CRM.Application.Features.Source.Commands.Create
 
             await _repository.AddAsync(source);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(source.Id, "The new source has been added successfully");
+            return BaseResponse<Guid>.SuccessResult(source.Id, 201, "The new source has been added successfully");
         }
     }
 }

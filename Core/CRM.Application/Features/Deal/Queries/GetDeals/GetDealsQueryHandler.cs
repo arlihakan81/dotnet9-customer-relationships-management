@@ -27,7 +27,7 @@ namespace CRM.Application.Features.Deal.Queries.GetDeals
             var data = _mapper.Map<IEnumerable<DealDto>>(query);
             var items = new PagedList<DealDto>(data, request.Page, request.PageSize);
 
-            return BaseResponse<PagedList<DealDto>>.SuccessResult(items, "Retrieved all deals succeed");
+            return BaseResponse<PagedList<DealDto>>.SuccessResult(items, 200, "Retrieved all deals succeed");
         }
     }
 }

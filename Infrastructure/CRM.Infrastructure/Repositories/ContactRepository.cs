@@ -38,7 +38,18 @@ namespace CRM.Infrastructure.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
+        public async Task<bool> IsUniqueEmailAddressAsync(string email, Guid? excludeId = null)
+        {
+            return excludeId is null ?
+                !await _context.Contacts.AnyAsync(c => c.Email.Value == email) :
+                !await _context.Contacts.AnyAsync(c => c.Email.Value == email && c.Id != excludeId);
+        }
 
-
+        public async Task<bool> IsUniqueMobileOrPhoneAsync(string phone, Guid? excludeId = null)
+        {
+            return excludeId is null ?
+                !await _context.Contacts.AnyAsync(c => c.Mobile.Value == phone) :
+                !await _context.Contacts.AnyAsync(c => c.Mobile.Value == phone && c.Id != excludeId);
+        }
     }
 }

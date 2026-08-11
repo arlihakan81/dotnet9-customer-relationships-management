@@ -17,10 +17,10 @@ namespace CRM.Application.Features.Contact.Queries.GetContact
             var contact = await  _repository.GetByIdAsync(request.Id);
             if (contact == null)
             {
-                return BaseResponse<ContactDto>.FailureResult("Contact not found", "Contact not found");
+                return BaseResponse<ContactDto>.FailureResult("Contact not found", 404, "Contact not found");
             }
             var contactDto = _mapper.Map<ContactDto>(contact);
-            return BaseResponse<ContactDto>.SuccessResult(contactDto, "Contact retrieved successfully");
+            return BaseResponse<ContactDto>.SuccessResult(contactDto, 200, "Contact retrieved successfully");
         }
     }
 }

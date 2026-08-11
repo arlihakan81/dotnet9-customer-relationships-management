@@ -27,7 +27,7 @@ namespace CRM.Application.Features.Company.Queries.GetCompanies
             {
                 var data = _mapper.Map<List<CompanyDto>>(query);
                 var items = new PagedList<CompanyDto>(data, request.Page, request.PageSize);
-                return BaseResponse<PagedList<CompanyDto>>.SuccessResult(items);
+                return BaseResponse<PagedList<CompanyDto>>.SuccessResult(items, 200);
             }
             return new BaseResponse<PagedList<CompanyDto>>();
         }

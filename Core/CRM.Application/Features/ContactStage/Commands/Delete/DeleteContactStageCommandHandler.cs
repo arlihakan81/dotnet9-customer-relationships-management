@@ -15,13 +15,13 @@ namespace CRM.Application.Features.ContactStage.Commands.Delete
             var stage = await _repository.GetByIdAsync(request.Id);
             if (stage == null)
             {
-                return BaseResponse<Guid>.FailureResult("No contact stage found");
+                return BaseResponse<Guid>.FailureResult("No contact stage found", 400);
             }
 
             await _repository.DeleteAsync(request.Id);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return BaseResponse<Guid>.SuccessResult(stage.Id, "Contact stage has been deleted successfully");
+            return BaseResponse<Guid>.SuccessResult(stage.Id, 204, "Contact stage has been deleted successfully");
         }
     }
 }

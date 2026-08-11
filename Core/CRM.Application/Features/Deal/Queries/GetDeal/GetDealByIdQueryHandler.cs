@@ -17,12 +17,12 @@ namespace CRM.Application.Features.Deal.Queries.GetDeal
 
             if (deal == null)
             {
-                return BaseResponse<DealDto>.FailureResult("No deal found", $"No deal found by deal Id {request.Id}");
+                return BaseResponse<DealDto>.FailureResult("No deal found", 404, $"No deal found by deal Id {request.Id}");
             }
 
             var data = _mapper.Map<DealDto>(deal);
 
-            return BaseResponse<DealDto>.SuccessResult(data, "Retrieved requested data successfully");
+            return BaseResponse<DealDto>.SuccessResult(data, 200, "Retrieved requested data successfully");
 
         }
     }

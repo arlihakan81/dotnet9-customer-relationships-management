@@ -16,7 +16,7 @@ namespace CRM.Application.Features.Stage.Commands.Update
 
             if (stage == null) 
             {
-                return BaseResponse<Guid>.FailureResult("No pipeline stage found", $"No pipeline stage by stage Id {request.Id}"); 
+                return BaseResponse<Guid>.FailureResult("No pipeline stage found", 404, $"No pipeline stage by stage Id {request.Id}"); 
             }
 
             stage.Name = request.Name;
@@ -24,7 +24,7 @@ namespace CRM.Application.Features.Stage.Commands.Update
 
             _repository.UpdateAsync(stage);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(stage.Id, "The pipeline stage has been updated succeed");
+            return BaseResponse<Guid>.SuccessResult(stage.Id, 204, "The pipeline stage has been updated succeed");
 
         }
     }

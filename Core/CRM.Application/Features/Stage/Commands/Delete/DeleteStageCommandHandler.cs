@@ -15,12 +15,12 @@ namespace CRM.Application.Features.Stage.Commands.Delete
             var stage = await _repository.GetByIdAsync(request.Id);
             if (stage == null)
             {
-                return BaseResponse<Guid>.FailureResult("No pipeline stage found", $"No pipeline stage found by stage Id {request.Id}");
+                return BaseResponse<Guid>.FailureResult("No pipeline stage found", 404, $"No pipeline stage found by stage Id {request.Id}");
             }
 
             await _repository.DeleteAsync(stage.Id);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(stage.Id, "The pipeline stage has been deleted");
+            return BaseResponse<Guid>.SuccessResult(stage.Id, 204, "The pipeline stage has been deleted");
         }
     }
 }

@@ -22,8 +22,13 @@ namespace CRM.Application.Features.Contact.Commands.Create
 
             if (!validationResult.IsValid)
             {
-                return BaseResponse<ContactDto>.FailureResult("Validation failed", string.Join(", ", validationResult.Errors.Select(x => x.ErrorMessage)));
+                return BaseResponse<ContactDto>.FailureResult("Validation failed", 400, string.Join(", ", validationResult.Errors.Select(x => x.ErrorMessage)));
             }
+
+            if (!await _repository.IsUniqueEmailAddressAsync(request.Email))
+                return BaseResponse<ContactDto>.FailureResult("Validation Failed", 400, $"{request.Email} already in use");
+            if (!await _repository.IsUniqueMobileOrPhoneAsync(request.Mobile))
+                return BaseResponse<ContactDto>.FailureResult("Validation Failed", 400, $"{request.Mobile} already in use");
 
             var contact = new Domain.Entities.Contact
             {
@@ -47,7 +52,7 @@ namespace CRM.Application.Features.Contact.Commands.Create
 
             var data = _mapper.Map<ContactDto>(contact);
 
-            return BaseResponse<ContactDto>.SuccessResult(data, "Contact has been added successfully");
+            return BaseResponse<ContactDto>.SuccessResult(data, 200, "Contact has been added successfully");
         }
     }
 }

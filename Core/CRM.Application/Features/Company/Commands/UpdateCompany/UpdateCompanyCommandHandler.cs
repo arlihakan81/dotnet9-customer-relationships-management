@@ -21,8 +21,17 @@ namespace CRM.Application.Features.Company.Commands.UpdateCompany
 
             if (!validationResult.IsValid)
             {
-                return BaseResponse<CompanyDto>.FailureResult("Validation failed", string.Join(", ", validationResult.Errors.Select(x => x.ErrorMessage)));
+                return BaseResponse<CompanyDto>.FailureResult("Validation failed", 400, string.Join(", ", validationResult.Errors.Select(x => x.ErrorMessage)));
             }
+
+            if (!await _repository.IsUniqueNameAsync(request.Name, request.Id))
+                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", 400, $"{request.Name} named company already saved");
+            if (!await _repository.IsUniqueTitleAsync(request.Title, request.Id))
+                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", 400, $"{request.Title} title already saved");
+            if (!await _repository.IsUniqueEmailAddressAsync(request.Email, request.Id))
+                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", 400, $"{request.Email} mail addressed already saved");
+            if (!await _repository.IsUniquePhoneOrMobileAsync(request.Phone, request.Id))
+                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", 400, $"{request.Phone} already saved");
 
             var company = await _repository.GetByIdAsync(request.Id);
             if(company != null)
@@ -54,7 +63,7 @@ namespace CRM.Application.Features.Company.Commands.UpdateCompany
             _repository.UpdateAsync(company!);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return BaseResponse<CompanyDto>.SuccessResult(_mapper.Map<CompanyDto>(company), "Company has been updated successfully");
+            return BaseResponse<CompanyDto>.SuccessResult(_mapper.Map<CompanyDto>(company), 204, "Company has been updated successfully");
         }
     }
 }

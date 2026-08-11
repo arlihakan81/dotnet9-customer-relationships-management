@@ -16,7 +16,7 @@ namespace CRM.Application.Features.Lead.Commands.Update
             var lead = await _repository.GetByIdAsync(request.Id);
 
             if (lead is null)
-                BaseResponse<LeadDto>.FailureResult(lead!.FirstName+" "+lead.LastName, "Requested data is not found");
+                BaseResponse<LeadDto>.FailureResult(lead!.FirstName+" "+lead.LastName, 404, "Requested data is not found");
             else
             {
                 lead.FirstName = request.FirstName;

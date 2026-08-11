@@ -16,11 +16,11 @@ namespace CRM.Application.Features.Company.Queries.GetCompany
             var company = await _repository.GetByIdAsync(request.Id);
             if (company == null)
             {
-                return new BaseResponse<CompanyDto>();
+                return BaseResponse<CompanyDto>.FailureResult("No company found", 404, $"No company found by company Id {request.Id}");
             }
 
             var data = _mapper.Map<CompanyDto>(company);
-            return BaseResponse<CompanyDto>.SuccessResult(data);
+            return BaseResponse<CompanyDto>.SuccessResult(data, 200);
         }
     }
 }

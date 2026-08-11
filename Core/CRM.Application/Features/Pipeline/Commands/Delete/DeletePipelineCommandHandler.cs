@@ -15,12 +15,12 @@ namespace CRM.Application.Features.Pipeline.Commands.Delete
             var pipeline = await _repository.GetByIdAsync(request.Id);
             if (pipeline == null)
             {
-                return BaseResponse<Guid>.FailureResult("No pipeline found", $"No pipeline found by pipeline Id {request.Id}");
+                return BaseResponse<Guid>.FailureResult("No pipeline found", 404, $"No pipeline found by pipeline Id {request.Id}");
             }
 
             await _repository.DeleteAsync(pipeline.Id);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(pipeline.Id, "The pipeline has been deleted successfully");
+            return BaseResponse<Guid>.SuccessResult(pipeline.Id, 204, "The pipeline has been deleted successfully");
         }
     }
 }

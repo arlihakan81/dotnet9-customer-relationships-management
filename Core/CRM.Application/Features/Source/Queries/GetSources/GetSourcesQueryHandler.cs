@@ -6,7 +6,7 @@ using MediatR;
 
 namespace CRM.Application.Features.Source.Queries.GetSources
 {
-    public class GetSourceQueryHandler(ISourceRepository repository, IMapper mapper) : IRequestHandler<GetSourcesQuery, BaseResponse<PagedList<SourceDto>>>
+    public class GetSourcesQueryHandler(ISourceRepository repository, IMapper mapper) : IRequestHandler<GetSourcesQuery, BaseResponse<PagedList<SourceDto>>>
     {
         private readonly ISourceRepository _repository = repository;
         private readonly IMapper _mapper = mapper;
@@ -21,7 +21,7 @@ namespace CRM.Application.Features.Source.Queries.GetSources
             var data = _mapper.Map<IEnumerable<SourceDto>>(query);
             var items = new PagedList<SourceDto>(data, request.Page, request.Count);
 
-            return BaseResponse<PagedList<SourceDto>>.SuccessResult(items, "Retrieved all sources succeed");
+            return BaseResponse<PagedList<SourceDto>>.SuccessResult(items, 200, "Retrieved all sources succeed");
         }
     }
 }

@@ -16,10 +16,10 @@ namespace CRM.Application.Features.Lead.Queries.GetLead
         {
             var lead = await _repository.GetByIdAsync(request.Id);
             if (lead is null)
-                return BaseResponse<LeadDto>.FailureResult("No lead found", $"No lead found with by Id query = {request.Id}");
+                return BaseResponse<LeadDto>.FailureResult("No lead found", 404, $"No lead found with by Id query = {request.Id}");
 
             var data = _mapper.Map<LeadDto>(lead);
-            return BaseResponse<LeadDto>.SuccessResult(data, "Retrieved lead data");
+            return BaseResponse<LeadDto>.SuccessResult(data, 200, "Retrieved lead data");
         }
     }
 }

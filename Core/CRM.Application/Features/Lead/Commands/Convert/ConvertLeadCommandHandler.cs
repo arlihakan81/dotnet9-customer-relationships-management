@@ -23,9 +23,9 @@ namespace CRM.Application.Features.Lead.Commands.Convert
             {
                 var lead = await _repository.GetByIdAsync(request.Id);
                 if (lead is null)
-                    return BaseResponse<Guid>.FailureResult("No lead found", $"No lead found by with Id:{request.Id}");
+                    return BaseResponse<Guid>.FailureResult("No lead found", 404, $"No lead found by with Id:{request.Id}");
                 if (lead.Status)
-                    return BaseResponse<Guid>.FailureResult("The lead has been converted already");
+                    return BaseResponse<Guid>.FailureResult("The lead has been converted already", 400);
                 // Convert process ...
 
                 Domain.Entities.Company company = new();
@@ -34,7 +34,7 @@ namespace CRM.Application.Features.Lead.Commands.Convert
                 {
                     company = await _companyRepository.GetByIdAsync(request.ExistingCompanyId.Value);
                     if (company is null)
-                        return BaseResponse<Guid>.FailureResult("No company found", $"No company found by with Id: {request.ExistingCompanyId.Value}");                    
+                        return BaseResponse<Guid>.FailureResult("No company found", 404, $"No company found by with Id: {request.ExistingCompanyId.Value}");                    
                 }
                 else
                 {
@@ -76,7 +76,7 @@ namespace CRM.Application.Features.Lead.Commands.Convert
                     await _unitOfWork.CommitTransactionAsync(cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                 }
-                return BaseResponse<Guid>.SuccessResult(request.Id, "The lead has been converted successfully");
+                return BaseResponse<Guid>.SuccessResult(request.Id, 200, "The lead has been converted successfully");
             }
             catch (Exception)
             {

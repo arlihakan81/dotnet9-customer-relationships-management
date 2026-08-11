@@ -21,7 +21,7 @@ namespace CRM.Application.Features.ContactStage.Queries.GetContactStages
             var data = _mapper.Map<IEnumerable<ContactStageDto>>(query);
             var items = new PagedList<ContactStageDto>(data, request.Page, request.PageSize);
 
-            return BaseResponse<PagedList<ContactStageDto>>.SuccessResult(items, "Retrieved all contact stages successfully");
+            return BaseResponse<PagedList<ContactStageDto>>.SuccessResult(items, 200, "Retrieved all contact stages successfully");
         }
     }
 }

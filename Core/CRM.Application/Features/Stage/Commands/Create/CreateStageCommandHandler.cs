@@ -16,7 +16,7 @@ namespace CRM.Application.Features.Stage.Commands.Create
 
             if (stage != null)
             {
-                return BaseResponse<Guid>.FailureResult("The stage already exists", $"{request.Name} stage already exists in this pipeline Id {request.PipelineId} ");
+                return BaseResponse<Guid>.FailureResult("The stage already exists", 404, $"{request.Name} stage already exists in this pipeline Id {request.PipelineId} ");
             }
 
             var newStage = new Domain.Entities.Stage
@@ -27,7 +27,7 @@ namespace CRM.Application.Features.Stage.Commands.Create
 
             await _repository.AddAsync(newStage);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(newStage.Id, "The new stage has been added successfully");
+            return BaseResponse<Guid>.SuccessResult(newStage.Id, 201, "The new stage has been added successfully");
 
         }
     }

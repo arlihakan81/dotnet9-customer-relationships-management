@@ -16,7 +16,7 @@ namespace CRM.Application.Features.Pipeline.Commands.Create
 
             if (existPipeline is not null)
             {
-                return BaseResponse<Guid>.FailureResult("Operation failed", $"{request.Name} already exists");
+                return BaseResponse<Guid>.FailureResult("Operation failed", 400, $"{request.Name} already exists");
             }
 
             var pipeline = new Domain.Entities.Pipeline
@@ -27,7 +27,7 @@ namespace CRM.Application.Features.Pipeline.Commands.Create
             await _repository.AddAsync(pipeline);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return BaseResponse<Guid>.SuccessResult(pipeline.Id, "New pipeline has been added successfully");
+            return BaseResponse<Guid>.SuccessResult(pipeline.Id, 201, "New pipeline has been added successfully");
         }
     }
 }

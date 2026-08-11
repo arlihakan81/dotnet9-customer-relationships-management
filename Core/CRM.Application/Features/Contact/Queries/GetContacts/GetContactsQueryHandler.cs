@@ -20,7 +20,7 @@ namespace CRM.Application.Features.Contact.Queries.GetContacts
             }
             var items = _mapper.Map<List<ContactDto>>(query);
             var pagedList = new PagedList<ContactDto>(items, request.Page, request.PageSize);
-            return BaseResponse<PagedList<ContactDto>>.SuccessResult(pagedList);
+            return BaseResponse<PagedList<ContactDto>>.SuccessResult(pagedList, 200);
         }
     }
 }

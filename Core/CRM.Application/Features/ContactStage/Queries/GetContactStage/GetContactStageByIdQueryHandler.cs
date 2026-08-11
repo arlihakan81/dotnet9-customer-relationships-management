@@ -16,10 +16,10 @@ namespace CRM.Application.Features.ContactStage.Queries.GetContactStage
             var stage = await _repository.GetByIdAsync(request.Id);
             if (stage == null)
             {
-                return BaseResponse<ContactStageDto>.FailureResult("No found contact stage", $"No found contact stage by request Id: {request.Id}");
+                return BaseResponse<ContactStageDto>.FailureResult("No found contact stage", 404, $"No found contact stage by request Id: {request.Id}");
             }
             var data = _mapper.Map<ContactStageDto>(stage);
-            return BaseResponse<ContactStageDto>.SuccessResult(data, "Retrieved contact stage by Id ");
+            return BaseResponse<ContactStageDto>.SuccessResult(data, 200, "Retrieved contact stage by Id ");
         }
     }
 }

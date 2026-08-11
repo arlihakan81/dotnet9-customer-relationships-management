@@ -21,8 +21,29 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
 
             if (!validationResult.IsValid)
             {
-                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", string.Join(", ", validationResult.Errors.Select(x => x.ErrorMessage)));
+                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", 400, string.Join(", ", validationResult.Errors.Select(x => x.ErrorMessage)));
             }
+
+            if (!await _repository.IsUniqueNameAsync(request.Name))
+            {
+                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", 400, $"{request.Name} named company already saved");
+            }
+
+            if (!await _repository.IsUniqueTitleAsync(request.Title))
+            {
+                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", 400, $"{request.Title} named company already saved");
+            }
+
+            if(!await _repository.IsUniqueEmailAddressAsync(request.Email))
+            {
+                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", 400, $"{request.Email} mail addressed company already saved");
+            }
+
+            if(!await _repository.IsUniquePhoneOrMobileAsync(request.Phone))
+            {
+                return BaseResponse<CompanyDto>.FailureResult("Validation Failed", 400, $"{request.Phone} phone number already saved");
+            }
+
             var company = new Domain.Entities.Company
             {
                 AvatarUrl = request.AvatarUrl,
@@ -54,7 +75,7 @@ namespace CRM.Application.Features.Company.Commands.CreateCompany
 
             company = await _repository.GetByIdAsync(company.Id);
 
-            return BaseResponse<CompanyDto>.SuccessResult(_mapper.Map<CompanyDto>(company), "New company has been added successfully");
+            return BaseResponse<CompanyDto>.SuccessResult(_mapper.Map<CompanyDto>(company), 201, "New company has been added successfully");
         }
     }
 }

@@ -15,9 +15,9 @@ namespace CRM.Application.Features.Pipeline.Queries.GetPipeline
         {
             var pipeline = await _repository.GetByIdAsync(request.Id);
             if (pipeline == null)
-                return BaseResponse<PipelineDto>.FailureResult("No pipeline found", $"No pipeline found by pipeline Id: {request.Id}");
+                return BaseResponse<PipelineDto>.FailureResult("No pipeline found", 404, $"No pipeline found by pipeline Id: {request.Id}");
             var data = _mapper.Map<PipelineDto>(pipeline);
-            return BaseResponse<PipelineDto>.SuccessResult(data, "Retrieved requested data successfully");
+            return BaseResponse<PipelineDto>.SuccessResult(data, 200, "Retrieved requested data successfully");
         }
     }
 }

@@ -14,10 +14,10 @@ namespace CRM.Application.Features.Lead.Commands.Delete
         {
             var lead = await _repository.GetByIdAsync(request.Id);
             if (lead is null)
-                return BaseResponse<Guid>.FailureResult("No lead found", "No lead found");
+                return BaseResponse<Guid>.FailureResult("No lead found", 404, "No lead found");
             await _repository.DeleteAsync(request.Id);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(lead.Id, "Lead deleted successfully");
+            return BaseResponse<Guid>.SuccessResult(lead.Id, 204, "Lead deleted successfully");
         }
     }
 }

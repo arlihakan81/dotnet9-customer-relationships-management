@@ -16,11 +16,11 @@ namespace CRM.Application.Features.Stage.Queries.GetPipelineStage
             var stage = await _repository.GetByIdAsync(request.Id);
             if (stage == null)
             {
-                return BaseResponse<StageDto>.FailureResult("No pipeline stage found", $"No pipeline stage found by stage Id {request.Id}");
+                return BaseResponse<StageDto>.FailureResult("No pipeline stage found", 404, $"No pipeline stage found by stage Id {request.Id}");
             }
 
             var data = _mapper.Map<StageDto>(stage);
-            return BaseResponse<StageDto>.SuccessResult(data, "Retrieved requested data succeed");
+            return BaseResponse<StageDto>.SuccessResult(data, 200, "Retrieved requested data succeed");
 
         }
     }

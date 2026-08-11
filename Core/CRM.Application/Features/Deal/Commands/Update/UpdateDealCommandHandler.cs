@@ -16,10 +16,10 @@ namespace CRM.Application.Features.Deal.Commands.Update
             var deal = await _repository.GetByIdAsync(request.Id);
 
             if (deal is null)
-                return BaseResponse<Guid>.FailureResult("Operation failed", $"No deal found by deal Id {request.Id}");
+                return BaseResponse<Guid>.FailureResult("Operation failed", 400, $"No deal found by deal Id {request.Id}");
 
             if (deal.Stage.PipelineId != request.PipelineId)
-                return BaseResponse<Guid>.FailureResult("Operation failed", $"{request.PipelineId} does not match {deal.Stage.PipelineId}");
+                return BaseResponse<Guid>.FailureResult("Operation failed", 400, $"{request.PipelineId} does not match {deal.Stage.PipelineId}");
 
             deal.Name = request.Name;
             deal.PipelineId = request.PipelineId;
@@ -37,7 +37,7 @@ namespace CRM.Application.Features.Deal.Commands.Update
 
             _repository.UpdateAsync(deal);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(deal.Id, "The Deal has been updated successfully");
+            return BaseResponse<Guid>.SuccessResult(deal.Id, 204, "The Deal has been updated successfully");
         }
     }
 }

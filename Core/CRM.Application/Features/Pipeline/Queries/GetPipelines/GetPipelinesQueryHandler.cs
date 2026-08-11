@@ -24,7 +24,7 @@ namespace CRM.Application.Features.Pipeline.Queries.GetPipelines
             var data = _mapper.Map<IEnumerable<PipelineDto>>(query);
             var items = new PagedList<PipelineDto>(data, request.Page, request.PageSize);
 
-            return BaseResponse<PagedList<PipelineDto>>.SuccessResult(items, "Retrieved all pipelines successfully");
+            return BaseResponse<PagedList<PipelineDto>>.SuccessResult(items, 200, "Retrieved all pipelines successfully");
         }
     }
 }

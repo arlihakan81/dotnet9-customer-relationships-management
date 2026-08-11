@@ -16,7 +16,7 @@ namespace CRM.Application.Features.ContactStage.Commands.Update
 
             if (stage == null)
             {
-                return BaseResponse<Guid>.FailureResult("No contact stage found");
+                return BaseResponse<Guid>.FailureResult("No contact stage found", 404);
             }
 
             stage.Name = request.Name;
@@ -24,7 +24,7 @@ namespace CRM.Application.Features.ContactStage.Commands.Update
 
             _repository.UpdateAsync(stage);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(stage.Id, "Contact stage has been updated successfully");
+            return BaseResponse<Guid>.SuccessResult(stage.Id, 204, "Contact stage has been updated successfully");
         }
     }
 }

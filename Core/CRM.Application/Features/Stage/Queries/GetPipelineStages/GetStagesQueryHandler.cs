@@ -24,7 +24,7 @@ namespace CRM.Application.Features.Stage.Queries.GetPipelineStages
             var data = _mapper.Map<IEnumerable<StageDto>>(query);
             var items = new PagedList<StageDto>(data, request.Page, request.PageSize);
 
-            return BaseResponse<PagedList<StageDto>>.SuccessResult(items, "Retrieved all pipeline stages succeed");
+            return BaseResponse<PagedList<StageDto>>.SuccessResult(items, 200, "Retrieved all pipeline stages succeed");
         }
     }
 }

@@ -20,13 +20,19 @@ namespace CRM.Application.Features.Contact.Commands.Update
             var valid = await _validator.ValidateAsync(request, cancellationToken);
 
             if (!valid.IsValid)
-                return BaseResponse<ContactDto>.FailureResult("Validation failed", string.Join(", ", valid.Errors.Select(x => x.ErrorMessage)));
+                return BaseResponse<ContactDto>.FailureResult("Validation failed", 400, string.Join(", ", valid.Errors.Select(x => x.ErrorMessage)));
 
             var contact = await _repository.GetByIdAsync(request.Id);
             if (contact is null)
             {
                 throw new Exception($"Contact with Id {request.Id} not found.");
             }
+
+            if (!await _repository.IsUniqueEmailAddressAsync(request.Email, request.Id))
+                return BaseResponse<ContactDto>.FailureResult("Validation Failed", 400, $"{request.Email} already in use");
+            if (!await _repository.IsUniqueMobileOrPhoneAsync(request.Mobile, request.Id))
+                return BaseResponse<ContactDto>.FailureResult("Validation Failed", 400, $"{request.Mobile} already in use");
+
             contact.FirstName = request.FirstName;
             contact.LastName = request.LastName;
             contact.Email = new Domain.ValueObjects.EmailAddress(request.Email);
@@ -44,7 +50,7 @@ namespace CRM.Application.Features.Contact.Commands.Update
 
             var data = _mapper.Map<ContactDto>(contact);
 
-            return BaseResponse<ContactDto>.SuccessResult(data, "Contact has been updated successfully");
+            return BaseResponse<ContactDto>.SuccessResult(data, 204, "Contact has been updated successfully");
         }
     }
 }

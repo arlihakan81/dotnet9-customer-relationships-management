@@ -15,15 +15,15 @@ namespace CRM.Application.Features.Deal.Commands.Create
         {
             var isUnique = await _repository.GetAsync(_ => _.Name == request.Name);
             if (isUnique != null)
-                return BaseResponse<Guid>.FailureResult("The deal name already exists", $"{request.Name} already exists");
+                return BaseResponse<Guid>.FailureResult("The deal name already exists", 400, $"{request.Name} already exists");
 
             var stage = await _stageRepository.GetByIdAsync(request.StageId);
 
             if (stage is null)
-                return BaseResponse<Guid>.FailureResult("Operation failed", $"{request.StageId} does not found ");
+                return BaseResponse<Guid>.FailureResult("Operation failed", 400, $"{request.StageId} does not found ");
 
             if (request.PipelineId != stage.PipelineId)
-                return BaseResponse<Guid>.FailureResult("Operation failed", $"{request.PipelineId} does not match {stage.PipelineId}");
+                return BaseResponse<Guid>.FailureResult("Operation failed", 400, $"{request.PipelineId} does not match {stage.PipelineId}");
 
             var deal = new Domain.Entities.Deal
             {
@@ -45,7 +45,7 @@ namespace CRM.Application.Features.Deal.Commands.Create
             await _repository.AddAsync(deal);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return BaseResponse<Guid>.SuccessResult(deal.Id, "The new deal has been added succeed");
+            return BaseResponse<Guid>.SuccessResult(deal.Id, 201, "The new deal has been added succeed");
         }
     }
 }

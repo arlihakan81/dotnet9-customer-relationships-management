@@ -21,11 +21,11 @@ namespace CRM.Application.Features.Lead.Queries.GetLeads
                 if(request.OwnerId is not null)
                     query = query!.Where(_ => _.OwnerId == request.OwnerId);
                 var leadDtos = _mapper.Map<IEnumerable<LeadDto>>(query);
-                return BaseResponse<IEnumerable<LeadDto>>.SuccessResult(leadDtos, "Leads retrieved successfully.");
+                return BaseResponse<IEnumerable<LeadDto>>.SuccessResult(leadDtos, 200, "Leads retrieved successfully.");
             }
             catch (Exception ex)
             {
-                return BaseResponse<IEnumerable<LeadDto>>.FailureResult(new List<string> { ex.Message }, "An error occurred while retrieving leads.");
+                return BaseResponse<IEnumerable<LeadDto>>.FailureResult(new List<string> { ex.Message }, 400, "An error occurred while retrieving leads.");
             }
         }
     }

@@ -15,11 +15,11 @@ namespace CRM.Application.Features.Contact.Commands.Delete
             var contact = await _repository.GetByIdAsync(request.Id);
             if (contact is null)
             {
-                return BaseResponse<Guid>.FailureResult($"Contact with Id {request.Id} not found.");
+                return BaseResponse<Guid>.FailureResult($"Contact with Id {request.Id} not found.", 404);
             }
             await _repository.DeleteAsync(contact.Id);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(contact.Id, "Contact deleted successfully.");
+            return BaseResponse<Guid>.SuccessResult(contact.Id, 204, "Contact deleted successfully.");
         }
     }
 }

@@ -15,11 +15,11 @@ namespace CRM.Application.Features.Deal.Commands.Delete
             var deal = await _repository.GetByIdAsync(request.Id);
 
             if (deal is null)
-                return BaseResponse<Guid>.FailureResult("Operation failed", $"No deal found by deal Id {request.Id}");
+                return BaseResponse<Guid>.FailureResult("Operation failed", 404, $"No deal found by deal Id {request.Id}");
 
             await _repository.DeleteAsync(deal.Id);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(deal.Id, "The deal has been deleted successfully");
+            return BaseResponse<Guid>.SuccessResult(deal.Id, 204, "The deal has been deleted successfully");
         }
     }
 }

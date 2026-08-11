@@ -15,18 +15,18 @@ namespace CRM.Application.Features.Pipeline.Commands.Update
             var pipeline = await _repository.GetByIdAsync(request.Id);
             if (pipeline == null)
             {
-                return BaseResponse<Guid>.FailureResult("No pipeline found", $"No pipeline found by pipeline Id: {request.Id}");
+                return BaseResponse<Guid>.FailureResult("No pipeline found", 404, $"No pipeline found by pipeline Id: {request.Id}");
             }
             var isUnique = await _repository.GetAsync(_ => _.Name == request.Name && _.Id != pipeline.Id);
 
             if (isUnique != null)
-                return BaseResponse<Guid>.FailureResult("Operation failed", $"{request.Name} alreay exists");
+                return BaseResponse<Guid>.FailureResult("Operation failed", 404, $"{request.Name} alreay exists");
 
             pipeline.Name = request.Name;
 
             _repository.UpdateAsync(pipeline);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return BaseResponse<Guid>.SuccessResult(pipeline.Id, "The pipeline has been updated successfully");
+            return BaseResponse<Guid>.SuccessResult(pipeline.Id, 204, "The pipeline has been updated successfully");
 
         }
     }
